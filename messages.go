@@ -122,6 +122,8 @@ func (c *Client) ListMessage(ctx context.Context, threadID string,
 		return
 	}
 
+	fmt.Print("Request URL: ", req.URL.String())
+
 	err = c.sendRequest(req, &messages)
 	return
 }
