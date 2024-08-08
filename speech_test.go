@@ -92,7 +92,11 @@ func TestSpeechIntegration(t *testing.T) {
 		checks.NoError(t, err, "ReadAll error")
 
 		// save buf to file as mp3
-		err = os.WriteFile("test.mp3", buf, 0644)
+		filename := "test.mp3"
+		err = os.WriteFile(filename, buf, 0644)
+		defer func() {
+			os.Remove(filename)
+		}()
 		checks.NoError(t, err, "Create error")
 	})
 }
