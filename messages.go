@@ -108,7 +108,11 @@ func (c *Client) ListMessage(ctx context.Context, threadID string,
 	}
 	encodedValues := ""
 	if len(urlValues) > 0 {
-		encodedValues = "?" + urlValues.Encode()
+		if c.config.APIVersion != "" {
+			encodedValues = "&" + urlValues.Encode()
+		} else {
+			encodedValues = "?" + urlValues.Encode()
+		}
 	}
 
 	urlSuffix := fmt.Sprintf("/threads/%s/%s%s", threadID, messagesSuffix, encodedValues)
