@@ -106,17 +106,20 @@ func (c *Client) ListMessage(ctx context.Context, threadID string,
 	if before != nil {
 		urlValues.Add("before", *before)
 	}
+
+	urlSuffix := fmt.Sprintf("/threads/%s/%s", threadID, messagesSuffix)
+
 	encodedValues := ""
 	if len(urlValues) > 0 {
-		if c.config.APIVersion != "" {
-			encodedValues = "&" + urlValues.Encode()
-		} else {
+		if c.config.APIVersion == "" {
 			encodedValues = "?" + urlValues.Encode()
+		} else {
+			encodedValues = "&" + urlValues.Encode()
 		}
 	}
+	fullURL := c.fullURL(urlSuffix) + encodedValues
 
-	urlSuffix := fmt.Sprintf("/threads/%s/%s%s", threadID, messagesSuffix, encodedValues)
-	req, err := c.newRequest(ctx, http.MethodGet, c.fullURL(urlSuffix),
+	req, err := c.newRequest(ctx, http.MethodGet, fullURL,
 		withBetaAssistantVersion(c.config.AssistantVersion))
 	if err != nil {
 		return
