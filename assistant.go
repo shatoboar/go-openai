@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -224,7 +226,10 @@ func (c *Client) ListAssistants(
 	}
 
 	urlSuffix := fmt.Sprintf("%s%s", assistantsSuffix, encodedValues)
-	req, err := c.newRequest(ctx, http.MethodGet, c.fullURL(urlSuffix),
+	fullURL := c.fullURL(urlSuffix)
+	logrus.Infof(fullURL)
+
+	req, err := c.newRequest(ctx, http.MethodGet, fullURL,
 		withBetaAssistantVersion(c.config.AssistantVersion))
 	if err != nil {
 		return
