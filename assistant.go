@@ -225,8 +225,7 @@ func (c *Client) ListAssistants(
 		}
 	}
 
-	urlSuffix := fmt.Sprintf("%s%s", assistantsSuffix, encodedValues)
-	fullURL := c.fullURL(urlSuffix)
+	fullURL := c.fullURL(assistantsSuffix) + encodedValues
 	logrus.Infof(fullURL)
 
 	req, err := c.newRequest(ctx, http.MethodGet, fullURL,
