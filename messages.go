@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -127,7 +129,7 @@ func (c *Client) ListMessage(ctx context.Context, threadID string,
 	}
 	fullURL := c.fullURL(urlSuffix) + encodedValues
 
-	fmt.Printf(fullURL)
+	logrus.Infof(fullURL)
 
 	req, err := c.newRequest(ctx, http.MethodGet, fullURL,
 		withBetaAssistantVersion(c.config.AssistantVersion))
