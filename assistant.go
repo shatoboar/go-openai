@@ -216,7 +216,11 @@ func (c *Client) ListAssistants(
 
 	encodedValues := ""
 	if len(urlValues) > 0 {
-		encodedValues = "?" + urlValues.Encode()
+		if c.config.APIVersion == "" {
+			encodedValues = "?" + urlValues.Encode()
+		} else {
+			encodedValues = "&" + urlValues.Encode()
+		}
 	}
 
 	urlSuffix := fmt.Sprintf("%s%s", assistantsSuffix, encodedValues)
