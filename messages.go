@@ -127,6 +127,8 @@ func (c *Client) ListMessage(ctx context.Context, threadID string,
 	}
 	fullURL := c.fullURL(urlSuffix) + encodedValues
 
+	fmt.Printf(fullURL)
+
 	req, err := c.newRequest(ctx, http.MethodGet, fullURL,
 		withBetaAssistantVersion(c.config.AssistantVersion))
 	if err != nil {
