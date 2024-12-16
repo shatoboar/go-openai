@@ -54,10 +54,11 @@ type ImageFile struct {
 }
 
 type MessageRequest struct {
-	Role     string         `json:"role"`
-	Content  string         `json:"content"`
-	FileIds  []string       `json:"file_ids,omitempty"` //nolint:revive // backwards-compatibility
-	Metadata map[string]any `json:"metadata,omitempty"`
+	Role        string             `json:"role"`
+	Content     string             `json:"content"`
+	FileIds     []string           `json:"file_ids,omitempty"` //nolint:revive // backwards-compatibility
+	Metadata    map[string]any     `json:"metadata,omitempty"`
+	Attachments []ThreadAttachment `json:"attachments,omitempty"`
 }
 
 type MessageFile struct {
@@ -102,6 +103,7 @@ func (c *Client) ListMessage(ctx context.Context, threadID string,
 	order *string,
 	after *string,
 	before *string,
+	runID *string,
 ) (messages MessagesList, err error) {
 	urlValues := url.Values{}
 	if limit != nil {
@@ -118,6 +120,10 @@ func (c *Client) ListMessage(ctx context.Context, threadID string,
 	}
 
 	urlSuffix := fmt.Sprintf("/threads/%s/%s", threadID, messagesSuffix)
+
+	if runID != nil {
+		urlValues.Add("run_id", *runID)
+	}
 
 	encodedValues := ""
 	if len(urlValues) > 0 {
